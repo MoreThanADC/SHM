@@ -9,7 +9,8 @@ set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
 FetchContent_MakeAvailable(googletest)
 
 set(Sources
-    ShipTests.cpp)
+    ShipTests.cpp
+    CargoTests.cpp)
 
 enable_testing()
 

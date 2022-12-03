@@ -5,7 +5,10 @@ set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 set(Sources
-    Ship.cpp)
+    Ship.cpp
+    Cargo.cpp
+    Alcohol.cpp
+    Fruit.cpp)
 
 add_library(${PROJECT_NAME}-lib STATIC ${Sources})  
 

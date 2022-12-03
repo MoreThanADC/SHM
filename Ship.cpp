@@ -2,7 +2,7 @@
 
 #include "Ship.hpp"
 
-void Ship::hireSailors(const unsigned crewToAdd)
+Ship& Ship::operator+=(const unsigned crewToAdd)
 {
     if (actualCrew_ + crewToAdd <= maxCrew_)
     {
@@ -13,11 +13,15 @@ void Ship::hireSailors(const unsigned crewToAdd)
         std::cout << "[WARNING] Ship is to small for " << actualCrew_ + crewToAdd
             << " sailors, max number of sailors is " << maxCrew_ << '\n';
     }
+
+    return *this;
 }
 
-void Ship::releaseSailors(const unsigned crewToFire)
+Ship& Ship::operator-=(const unsigned crewToFire)
 {
     actualCrew_ > crewToFire
     ? actualCrew_ -= crewToFire
     : actualCrew_ = 0;
+
+    return *this;
 }

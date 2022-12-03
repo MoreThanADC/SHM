@@ -1,4 +1,7 @@
 #include <string>
+#include <vector>
+
+#include "Cargo.hpp"
 
 class Ship
 {
@@ -12,12 +15,13 @@ public:
 {
 };
 
-void changeName(const std::string& newName)  { name_ = newName; }
-void hireSailors(const unsigned crewToAdd);
-void releaseSailors(const unsigned crewToFire);
+void changeName(const std::string& newName) { name_ = newName; }
 
 std::string getName() { return name_; }
 unsigned getActualCrew() { return actualCrew_; }
+
+Ship& operator+=(const unsigned crewToAdd);
+Ship& operator-=(const unsigned crewToFire);
 
 private:
     const unsigned id_;
@@ -26,4 +30,5 @@ private:
     const unsigned maxCrew_;
     unsigned capacity_;
     unsigned actualCrew_ = 0;
+    std::vector<Cargo> cargo_;
 };
