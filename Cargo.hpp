@@ -1,3 +1,6 @@
+#ifndef CARGO_HPP
+#define CARGO_HPP
+
 #include <string>
 
 class Cargo
@@ -10,6 +13,9 @@ public:
 {
 };
 
+unsigned getAmount() const { return amount_; }
+std::string getName() const { return name_; }
+
 Cargo& operator+=(const unsigned cargoToAdd);
 Cargo& operator-=(const unsigned cargoToDelete);
 
@@ -18,3 +24,5 @@ private:
     unsigned amount_;
     unsigned basePrice_;
 };
+
+#endif

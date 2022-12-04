@@ -1,3 +1,6 @@
+#ifndef SHIP_HPP
+#define SHIP_HPP
+
 #include <iostream>
 #include <string>
 #include <vector>
@@ -14,12 +17,16 @@ public:
     , maxCrew_(maxCrew)
     , capacity_(capacity)
 {
+    cargo_.reserve(capacity_);
 };
+
+void loadCargoOntoShip(const Cargo& cargoToAdd);
 
 void changeName(const std::string& newName) { name_ = newName; }
 
 std::string getName() { return name_; }
-unsigned getActualCrew() { return actualCrew_; }
+unsigned getActualCrew() const { return actualCrew_; }
+unsigned getOccupiedSpace() const { return spaceOccupied_; }
 
 Ship& operator+=(const unsigned crewToAdd);
 Ship& operator-=(const unsigned crewToFire);
@@ -33,5 +40,8 @@ private:
     const unsigned maxCrew_;
     unsigned capacity_;
     unsigned actualCrew_ = 0;
+    unsigned spaceOccupied_ = 0;
     std::vector<Cargo> cargo_;
 };
+
+#endif

@@ -1,10 +1,13 @@
 #include "gtest/gtest.h"
 
 #include "../Ship.hpp"
+#include "../Cargo.cpp"
+#include "../Alcohol.hpp"
+#include "../Fruit.hpp"
 
 struct ShipTest : public ::testing::Test
 {
-    Ship ship_ {0, "Black Widow", 1250, 50, 100};
+    Ship ship_ {0, "Black Widow", 15, 50, 1000};
 };
 
 TEST_F(ShipTest, ShouldChangeName)
@@ -34,4 +37,15 @@ TEST_F(ShipTest, ShouldFireSailors)
     EXPECT_EQ(ship_.getActualCrew(), 5);
     ship_-= 10;
     EXPECT_EQ(ship_.getActualCrew(), 0);
+}
+
+TEST_F(ShipTest, ShouldLoadCargoOntoShipIfIsEnaughSpace)
+{
+    // capacity == 1000
+    ship_.loadCargoOntoShip(Alcohol{"Beer", 800, 10, 6});
+    EXPECT_EQ(ship_.getOccupiedSpace(), 800);
+    ship_.loadCargoOntoShip(Fruit{"Banana", 200, 2, 30});
+    EXPECT_EQ(ship_.getOccupiedSpace(), 1000);
+    ship_.loadCargoOntoShip(Cargo{"Wood", 20, 15});
+    EXPECT_EQ(ship_.getOccupiedSpace(), 1000);
 }
