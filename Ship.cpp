@@ -25,3 +25,14 @@ Ship& Ship::operator-=(const unsigned crewToFire)
 
     return *this;
 }
+
+std::ostream& operator<<(std::ostream& os, const Ship& ship)
+{
+    os << "Name: " << ship.name_ << '\n'
+        << "ID: " << ship.id_ << '\n'
+        << "Speed: " << ship.speed_ << '\n'
+        << "Capacity: " << ship.cargo_.size() << '/' << ship.capacity_ << '\n'
+        << "Crew: " << ship.actualCrew_ << '/' << ship.maxCrew_ << '\n';
+
+    return os;
+}

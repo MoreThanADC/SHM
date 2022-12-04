@@ -1,3 +1,4 @@
+#include <iostream>
 #include <string>
 #include <vector>
 
@@ -22,6 +23,8 @@ unsigned getActualCrew() { return actualCrew_; }
 
 Ship& operator+=(const unsigned crewToAdd);
 Ship& operator-=(const unsigned crewToFire);
+
+friend std::ostream& operator<<(std::ostream& os, const Ship& ship);
 
 private:
     const unsigned id_;
