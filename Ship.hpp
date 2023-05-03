@@ -21,10 +21,12 @@ public:
 };
 
 void loadCargoOntoShip(const Cargo& cargoToAdd);
+void unloadCargoFromShip(const Cargo& cargoToRemove);
+void printCargos() const;
 
 void changeName(const std::string& newName) { name_ = newName; }
 
-std::string getName() { return name_; }
+std::string getName() const { return name_; }
 unsigned getActualCrew() const { return actualCrew_; }
 unsigned getOccupiedSpace() const { return spaceOccupied_; }
 

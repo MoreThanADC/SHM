@@ -1,4 +1,6 @@
+#include <algorithm>
 #include <iostream>
+#include <vector>
 
 #include "Ship.hpp"
 #include "Cargo.hpp"
@@ -14,6 +16,35 @@ void Ship::loadCargoOntoShip(const Cargo& cargoToAdd)
     {
         spaceOccupied_ += cargoToAdd.getAmount();
         cargo_.push_back(cargoToAdd);
+    }
+}
+
+void Ship::unloadCargoFromShip(const Cargo& cargoToRemove)
+{
+    auto removedCargo = std::remove_if(cargo_.begin(), cargo_.end(),
+                            [&cargoToRemove](Cargo cargo){return cargo.getName() == cargoToRemove.getName();});
+
+    if (removedCargo == cargo_.end())
+    {
+        std::cout << "[WARNING] " << cargoToRemove.getName() << " not found on the ship\n";
+        return;
+    }
+
+    if (spaceOccupied_ < cargoToRemove.getAmount())
+    {
+        std::cout << "[WARNING] Amout of " << cargoToRemove.getName() << " exceed occupied space on the ship\n";
+        return;
+    }
+
+    spaceOccupied_ -= cargoToRemove.getAmount();
+    cargo_.erase(removedCargo, cargo_.end());
+}
+
+void Ship::printCargos() const
+{
+    for (const auto& cargo : cargo_)
+    {
+        std::cout << cargo;
     }
 }
 
