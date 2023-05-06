@@ -1,4 +1,5 @@
 #include <iostream>
+#include <iomanip>
 
 #include "Cargo.hpp"
 
@@ -20,11 +21,19 @@ namespace
     }
 }
 
+Cargo::Cargo(std::string name, unsigned amount, unsigned price, typeOfCargo type)
+    : name_(name)
+    , amount_(amount)
+    , price_(price)
+    , type_(type)
+    {
+    }
+
 Cargo::Cargo(const Cargo& otherCargo)
 {
     this->name_ = otherCargo.name_;
     this->amount_ = otherCargo.amount_;
-    this->basePrice_ = otherCargo.basePrice_;
+    this->price_ = otherCargo.price_;
     this->type_= otherCargo.type_;
 }
 
@@ -32,7 +41,7 @@ Cargo& Cargo::operator=(const Cargo& otherCargo)
 {
     this->name_ = otherCargo.name_;
     this->amount_ = otherCargo.amount_;
-    this->basePrice_ = otherCargo.basePrice_;
+    this->price_ = otherCargo.price_;
     this->type_ = otherCargo.type_;
     return *this;
 }
@@ -61,10 +70,10 @@ Cargo& Cargo::operator-=(const unsigned cargoToDelete)
 
 std::ostream& operator<<(std::ostream& os, const Cargo& cargo)
 {
-    os << "Type: " << translateTypeOfCargo(cargo.type_) << ' '
-        << "Name: " << cargo.name_ << ' '
-        << "Amount: " << cargo.amount_ << ' '
-        << "Price: " << cargo.basePrice_ << '\n';
+    os << std::setw(12) << std::left << translateTypeOfCargo(cargo.type_) << ' '
+       << std::setw(12) << std::left << cargo.name_ << ' '
+       << std::setw(12) << std::left << cargo.amount_ << ' '
+       << std::setw(12) << std::left << cargo.price_ << '\n';
 
     return os;
 }

@@ -13,35 +13,30 @@ enum class typeOfCargo {
 class Cargo
 {
 public:
-    explicit Cargo(std::string name, unsigned amount, unsigned price, typeOfCargo type)
-    : name_(name)
-    , amount_(amount)
-    , basePrice_(price)
-    , type_(type)
-{
-};
+    explicit Cargo(std::string name, unsigned amount, unsigned price, typeOfCargo type);
 
-Cargo(const Cargo& otherCargo);
-Cargo& operator=(const Cargo& otherCargo);
+    Cargo(const Cargo& otherCargo);
+    Cargo& operator=(const Cargo& otherCargo);
 
-std::string getName() const { return name_; }
-typeOfCargo getType() const { return type_; }
-unsigned getAmount() const { return amount_; }
+    std::string getName() const { return name_; }
+    typeOfCargo getType() const { return type_; }
+    unsigned getAmount() const { return amount_; }
+    unsigned getPrice() const { return price_; }
 
-Cargo& operator+=(const unsigned cargoToAdd);
-Cargo& operator-=(const unsigned cargoToDelete);
+    Cargo& operator+=(const unsigned cargoToAdd);
+    Cargo& operator-=(const unsigned cargoToDelete);
 
-bool operator==(const Cargo rhs) const 
-{
-    return name_ == rhs.getName();
-};
+    bool operator==(const Cargo rhs) const 
+    {
+        return name_ == rhs.getName();
+    };
 
-friend std::ostream& operator<<(std::ostream& os, const Cargo& cargo);
+    friend std::ostream& operator<<(std::ostream& os, const Cargo& cargo);
 
 private:
     std::string name_;
     unsigned amount_;
-    unsigned basePrice_;
+    unsigned price_;
     typeOfCargo type_;
 };
 
