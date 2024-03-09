@@ -10,7 +10,9 @@ set(Sources
     Alcohol.cpp
     Fruit.cpp
     Item.cpp
-    Shop.cpp)
+    Shop.cpp
+    Player.cpp
+    Shipyard.cpp)
 
 add_library(${PROJECT_NAME}-lib STATIC ${Sources})  
 

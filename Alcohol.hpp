@@ -22,6 +22,7 @@ public:
     }
 
     virtual std::ostream& print(std::ostream& os) const override;
+
 private:
     unsigned alcoholContent_;
     static const unsigned MAX_ALCOHOL_CONTENT = 96;

@@ -32,7 +32,6 @@ public:
     virtual std::ostream& print(std::ostream& os) const;
 
 protected:
-
     std::string name_;
     unsigned amount_;
     unsigned price_;

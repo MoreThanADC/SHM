@@ -8,7 +8,7 @@
 
 struct ShipTest : public ::testing::Test
 {
-    Ship ship_{0, "Black Widow", 15, 50, 1000};
+    Ship ship_{"Black Widow", 15, 50, 1000};
 };
 
 TEST_F(ShipTest, ShouldChangeName)

@@ -6,10 +6,23 @@
 #include "Item.hpp"
 #include "Fruit.hpp"
 #include "Shop.hpp"
+#include "Player.hpp"
+#include "Shipyard.hpp"
 
 int main()
 {
-    Ship ship {0, "Black Widow", 1250, 50, 1000};
+    Shipyard shipyard{};
+    Player player("Good Sailor", 3000u);
+
+    shipyard.printShips();
+    player.buyShip(shipyard, 1u);
+    shipyard.printShips();
+    player.buyShip(shipyard, 2u);
+    shipyard.printShips();
+    player.buyShip(shipyard, 3u);
+    shipyard.printShips();
+
+    Ship ship {"Black Widow", 1250, 50, 1000};
     std::cout << "Created ship: " << ship.getName() << '\n';
 
     std::cout << ship;
