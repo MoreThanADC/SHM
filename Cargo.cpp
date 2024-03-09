@@ -5,27 +5,25 @@
 
 namespace
 {
-    std::string translateTypeOfCargo(const TypeOfCargo type)
-    {
-        switch (type)
-        {
-            case TypeOfCargo::Item :
-                return "Item";
-            case TypeOfCargo::Alcohol :
-                return "Alcohol";
-            case TypeOfCargo::Fruit :
-                return "Fruit";
-            default :
-                return "Invalid type of cargo";
-        }
+std::string translateTypeOfCargo(TypeOfCargo type) {
+    switch (type) {
+        case TypeOfCargo::Item:
+            return "Item";
+        case TypeOfCargo::Alcohol:
+            return "Alcohol";
+        case TypeOfCargo::Fruit:
+            return "Fruit";
+        default:
+            return "Invalid type of cargo";
     }
 }
+}
 
-Cargo::Cargo(std::string name, unsigned amount, unsigned price, TypeOfCargo type)
+Cargo::Cargo(const std::string& name, unsigned amount, unsigned price, TypeOfCargo type)
     : name_(name)
     , amount_(amount)
     , price_(price)
-    , type_(type)
+    , cargoType_(type)
     {
     }
 
@@ -34,7 +32,7 @@ Cargo::Cargo(const Cargo& otherCargo)
     name_ = otherCargo.name_;
     amount_ = otherCargo.amount_;
     price_ = otherCargo.price_;
-    type_= otherCargo.type_;
+    cargoType_= otherCargo.cargoType_;
 }
 
 Cargo& Cargo::operator=(const Cargo& otherCargo)
@@ -42,7 +40,7 @@ Cargo& Cargo::operator=(const Cargo& otherCargo)
     name_ = otherCargo.name_;
     amount_ = otherCargo.amount_;
     price_ = otherCargo.price_;
-    type_ = otherCargo.type_;
+    cargoType_ = otherCargo.cargoType_;
     return *this;
 }
 
@@ -67,12 +65,14 @@ Cargo& Cargo::operator-=(const unsigned cargoToDelete)
     return *this;
 }
 
-std::ostream& operator<<(std::ostream& os, const Cargo& cargo)
-{
-    os << std::setw(12) << std::left << translateTypeOfCargo(cargo.type_) << ' '
-       << std::setw(12) << std::left << cargo.name_ << ' '
-       << std::setw(12) << std::left << cargo.amount_ << ' '
-       << std::setw(12) << std::left << cargo.price_ << '\n';
+std::ostream& operator<<(std::ostream& os, const Cargo& cargo) {
+    return cargo.print(os);
+}
 
+std::ostream& Cargo::print(std::ostream& os) const {
+    os << std::setw(12) << std::left << translateTypeOfCargo(cargoType_) << ' '
+       << std::setw(12) << std::left << name_ << ' '
+       << std::setw(12) << std::left << amount_ << ' '
+       << std::setw(12) << std::left << price_;
     return os;
 }

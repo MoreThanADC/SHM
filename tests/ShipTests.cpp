@@ -43,39 +43,58 @@ TEST_F(ShipTest, ShouldFireSailors)
 TEST_F(ShipTest, ShouldLoadCargoOntoShipIfEnoughSpace)
 {
     // capacity == 1000
-    ship_.loadCargoOntoShip(Alcohol{"Beer", 800, 10, 6});
+    ship_.loadCargoOntoShip(std::make_shared<Alcohol>("Beer", 800, 10, 6));
     EXPECT_EQ(800, ship_.getOccupiedSpace());
-    ship_.loadCargoOntoShip(Fruit{"Banana", 200, 2, 30});
+    ship_.loadCargoOntoShip(std::make_shared<Fruit>("Banana", 200, 2, 30));
     EXPECT_EQ(1000, ship_.getOccupiedSpace());
-    ship_.loadCargoOntoShip(Item{"Wood", 200, 15});
+    ship_.loadCargoOntoShip(std::make_shared<Item>("Wood", 200, 15));
     EXPECT_EQ(1000, ship_.getOccupiedSpace());
 }
 
 TEST_F(ShipTest, ShouldUnloadCargoFromShipIfItExists)
 {
-    ship_.loadCargoOntoShip(Alcohol{"Beer", 400, 10, 6});
-    ship_.loadCargoOntoShip(Fruit{"Banana", 200, 2, 30});
+    auto beerCargo = std::make_shared<Alcohol>("Beer", 400, 10, 6);
+    ship_.loadCargoOntoShip(beerCargo);
+    ship_.loadCargoOntoShip(std::make_shared<Fruit>("Banana", 200, 2, 30));
     EXPECT_EQ(600, ship_.getOccupiedSpace());
-    ship_.unloadCargoFromShip(Alcohol{"Beer", 400, 10, 6});
+    
+    ship_.unloadCargoFromShip(beerCargo);
     EXPECT_EQ(200, ship_.getOccupiedSpace());
-    ship_.unloadCargoFromShip(Item{"Wood", 400, 10}); // This cargo doesn't exist on the ship
+    
+    auto woodCargo = std::make_shared<Item>("Wood", 400, 10);
+    ship_.unloadCargoFromShip(woodCargo); // This cargo doesn't exist on the ship
     EXPECT_EQ(200, ship_.getOccupiedSpace());
 }
 
 TEST_F(ShipTest, ShouldNotUnloadSameCargoTwiceFromShip)
 {
-    ship_.loadCargoOntoShip(Alcohol{"Banana", 200, 2, 30});
+    auto bananaCargo = std::make_shared<Alcohol>("Banana", 200, 2, 30);
+    ship_.loadCargoOntoShip(bananaCargo);
     EXPECT_EQ(200, ship_.getOccupiedSpace());
-    ship_.unloadCargoFromShip(Alcohol{"Banana", 200, 10, 6});
+
+    ship_.unloadCargoFromShip(bananaCargo);
     EXPECT_EQ(0, ship_.getOccupiedSpace());
-    ship_.unloadCargoFromShip(Alcohol{"Banana", 200, 10, 6});
+
+    ship_.unloadCargoFromShip(bananaCargo);
     EXPECT_EQ(0, ship_.getOccupiedSpace());
 }
 
 TEST_F(ShipTest, ShouldNotUnloadCargoFromShipIfAmountExceedsOccupiedSpace)
 {
-    ship_.loadCargoOntoShip(Fruit{"Banana", 200, 2, 30});
+    auto bananaCargo = std::make_shared<Fruit>("Banana", 200, 2, 30);
+    ship_.loadCargoOntoShip(bananaCargo);
     EXPECT_EQ(200, ship_.getOccupiedSpace());
-    ship_.unloadCargoFromShip(Fruit{"Banana", 300, 10, 6});
+
+    ship_.unloadCargoFromShip(std::make_shared<Fruit>("Banana", 300, 10, 6));
+    EXPECT_EQ(200, ship_.getOccupiedSpace());
+}
+
+TEST_F(ShipTest, ShouldNotUnloadCargoFromShipIfAlcoholPercentageIsDifferent)
+{
+    auto beerCargo = std::make_shared<Alcohol>("Beer", 200, 2, 10);
+    ship_.loadCargoOntoShip(beerCargo);
+    EXPECT_EQ(200, ship_.getOccupiedSpace());
+
+    ship_.unloadCargoFromShip(std::make_shared<Alcohol>("Beer", 200, 10, 6));
     EXPECT_EQ(200, ship_.getOccupiedSpace());
 }

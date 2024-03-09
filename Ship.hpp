@@ -4,6 +4,7 @@
 #include <iostream>
 #include <string>
 #include <vector>
+#include <memory>
 
 #include "Cargo.hpp"
 
@@ -20,8 +21,8 @@ public:
     cargo_.reserve(capacity_);
 };
 
-void loadCargoOntoShip(const Cargo& cargoToAdd);
-void unloadCargoFromShip(const Cargo& cargoToRemove);
+void loadCargoOntoShip(const std::shared_ptr<Cargo>& cargoToAdd);
+void unloadCargoFromShip(const std::shared_ptr<Cargo>& cargoToRemove);
 void printCargos() const;
 
 void changeName(const std::string& newName) { name_ = newName; }
@@ -43,7 +44,7 @@ private:
     unsigned capacity_;
     unsigned actualCrew_ = 0;
     unsigned spaceOccupied_ = 0;
-    std::vector<Cargo> cargo_;
+    std::vector<std::shared_ptr<Cargo>> cargo_;
 };
 
 #endif

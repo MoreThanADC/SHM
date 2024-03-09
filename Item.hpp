@@ -5,10 +5,18 @@
 
 class Item : public Cargo {
 public:
-    explicit Item(std::string name, unsigned amount, unsigned price);
+    explicit Item(const std::string& name, unsigned amount, unsigned price);
 
+    bool operator==(const Cargo& other) const override
+    {
+        const Item* otherItem = dynamic_cast<const Item*>(&other);
+        if (otherItem)
+        {
+            return name_ == otherItem->getName();
+        }
 
-private:
+        return false;
+    }
 };
 
 #endif

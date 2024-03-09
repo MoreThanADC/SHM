@@ -4,6 +4,7 @@
 #include "Cargo.hpp"
 
 #include <map>
+#include <memory>
 #include <vector>
 
 enum class Fruits {
@@ -38,6 +39,13 @@ public:
     void generateAssortment();
 
 private:
+    template < typename TypeOfCargo, typename PricesMap, typename TranslateFunction>
+    void generateCargo(const TypeOfCargo& cargoType, const PricesMap& pricesMap, const TranslateFunction& translateFunction);
+
+    void printAlcohols();
+    void printFruits();
+    void printItems();
+
     using BasePrice = unsigned;
     using BaseAmount = unsigned;
 
@@ -46,7 +54,7 @@ private:
         BaseAmount baseAmount;
     };
 
-    std::vector<Cargo> assortment_;
+    std::vector<std::shared_ptr<Cargo>> assortment_;
 
     std::map<Fruits, CargoInfo> fruitsWithPrices{
         {Fruits::Banana, {10, 30}},

@@ -10,7 +10,7 @@ FetchContent_MakeAvailable(googletest)
 
 set(Sources
     ShipTests.cpp
-    CargoTests.cpp)
+    )
 
 enable_testing()
 

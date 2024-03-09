@@ -5,39 +5,38 @@
 #include "Ship.hpp"
 #include "Cargo.hpp"
 
-void Ship::loadCargoOntoShip(const Cargo& cargoToAdd)
+void Ship::loadCargoOntoShip(const std::shared_ptr<Cargo>& cargoToAdd)
 {
-    if (spaceOccupied_ + cargoToAdd.getAmount() > capacity_)
+    if (spaceOccupied_ + cargoToAdd->getAmount() > capacity_)
     {
-        std::cout << "[WARNING] Unable to load " << cargoToAdd.getAmount() << ' ' << cargoToAdd.getName() 
+        std::cout << "[WARNING] Unable to load " << cargoToAdd->getAmount() << ' ' << cargoToAdd->getName() 
                   << " onto the ship. Capacity: " << spaceOccupied_ << '/' << capacity_ << '\n';
+        return;
     }
-    else
-    {
-        spaceOccupied_ += cargoToAdd.getAmount();
-        cargo_.push_back(cargoToAdd);
-    }
+
+    spaceOccupied_ += cargoToAdd->getAmount();
+    cargo_.push_back(cargoToAdd);
 }
 
-void Ship::unloadCargoFromShip(const Cargo& cargoToRemove)
+void Ship::unloadCargoFromShip(const std::shared_ptr<Cargo>& cargoToRemove)
 {
     auto removedCargo = std::find_if(cargo_.begin(), cargo_.end(),
-                                     [&cargoToRemove](const Cargo& cargo) {
-                                         return cargo.getName() == cargoToRemove.getName();
+                                     [&cargoToRemove](const std::shared_ptr<Cargo>& cargo) {
+                                         return *cargo == *cargoToRemove;
                                      });
 
     if (removedCargo == cargo_.end()) {
-        std::cout << "[WARNING] " << cargoToRemove.getName() << " not found on the ship\n";
+        std::cout << "[WARNING] " << cargoToRemove->getName() << " not found on the ship\n";
         return;
     }
 
-    if (spaceOccupied_ < cargoToRemove.getAmount())
+    if (spaceOccupied_ < cargoToRemove->getAmount())
     {
-        std::cout << "[WARNING] Amout of " << cargoToRemove.getName() << " exceed occupied space on the ship\n";
+        std::cout << "[WARNING] Amout of " << cargoToRemove->getName() << " exceed occupied space on the ship\n";
         return;
     }
 
-    spaceOccupied_ -= removedCargo->getAmount();
+    spaceOccupied_ -= (*removedCargo)->getAmount();
     cargo_.erase(removedCargo);
 }
 
