@@ -3,14 +3,12 @@
 
 #include "Cargo.hpp"
 
-class Item : public Cargo
-{
+class Item : public Cargo {
 public:
-    Item(std::string name, unsigned amount, unsigned price)
-    : Cargo(name, amount, price, typeOfCargo::Item)
-{
-};
+    explicit Item(std::string name, unsigned amount, unsigned price);
 
+
+private:
 };
 
 #endif

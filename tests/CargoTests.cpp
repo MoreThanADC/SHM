@@ -4,5 +4,5 @@
 
 struct CargoTest : public ::testing::Test
 {
-    Cargo cargo_ {"default cargo", 250, 20, typeOfCargo::Item};
+    Cargo cargo_ {"default cargo", 250, 20, TypeOfCargo::Item};
 };

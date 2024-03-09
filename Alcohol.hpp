@@ -3,18 +3,15 @@
 
 #include "Cargo.hpp"
 
-class Alcohol : public Cargo
-{
+class Alcohol : public Cargo {
 public:
-    Alcohol(std::string name, unsigned amount, unsigned price, unsigned alcoholContent)
-    : Cargo(name, amount, price, typeOfCargo::Alcohol)
-    , alcoholContent_(alcoholContent)
-{
-};
+    explicit Alcohol(std::string name, unsigned amount, unsigned price, unsigned alcoholContent);
+
+    unsigned getAlcoholContent() const { return alcoholContent_; }
 
 private:
     unsigned alcoholContent_;
-    const unsigned MAX_ALCOHOL_CONTENT = 96;
+    static const unsigned MAX_ALCOHOL_CONTENT = 96;
 };
 
 #endif

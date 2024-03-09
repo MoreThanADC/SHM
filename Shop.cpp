@@ -59,36 +59,22 @@ void Shop::generateAssortment()
     std::mt19937 gen(rd());
     std::uniform_int_distribution<> distrib(5, 15);
 
-    for (const auto& [fruit, pair] : fruitsWithPrices)
-    {
-        auto factor = distrib(gen) / 10.0;
+    auto generateCargo = [&](const auto& cargoType, const auto& pricesMap, auto translateFunction) {
+        for (const auto& [cargo, cargoInfo] : pricesMap)
+        {
+            auto factor = static_cast<double>(distrib(gen)) / 10.0;
 
-        auto name = translateNameOfFruit(fruit);
-        unsigned price = pair.first * factor;
-        unsigned amount = pair.second * factor;
+            auto name = translateFunction(cargo);
+            unsigned price = static_cast<unsigned>(cargoInfo.basePrice * factor);
+            unsigned amount = static_cast<unsigned>(cargoInfo.baseAmount * factor);
 
-        assortment_.emplace_back(Cargo(name, amount, price, typeOfCargo::Fruit));
-    }
-    for (const auto& [alcohol, pair] : alcoholsWithPrices)
-    {
-        auto factor = distrib(gen) / 10.0;
+            assortment_.emplace_back(Cargo(name, amount, price, cargoType));
+        }
+    };
 
-        auto name = translateNameOfAlcohol(alcohol);
-        unsigned price = pair.first * factor;
-        unsigned amount = pair.second * factor;
-
-        assortment_.emplace_back(Cargo(name, amount, price, typeOfCargo::Alcohol));
-    }
-    for (const auto& [item, pair] : itemsWithPrices)
-    {
-        auto factor = distrib(gen) / 10.0;
-
-        auto name = translateNameOfItem(item);
-        unsigned price = pair.first * factor;
-        unsigned amount = pair.second * factor;
-
-        assortment_.emplace_back(Cargo(name, amount, price, typeOfCargo::Item));
-    }
+    generateCargo(TypeOfCargo::Fruit, fruitsWithPrices, translateNameOfFruit);
+    generateCargo(TypeOfCargo::Alcohol, alcoholsWithPrices, translateNameOfAlcohol);
+    generateCargo(TypeOfCargo::Item, itemsWithPrices, translateNameOfItem);
 }
 
 void Shop::printAssortment()

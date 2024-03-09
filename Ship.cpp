@@ -9,8 +9,8 @@ void Ship::loadCargoOntoShip(const Cargo& cargoToAdd)
 {
     if (spaceOccupied_ + cargoToAdd.getAmount() > capacity_)
     {
-        std::cout << "[WARNING] It is not possible to load " << cargoToAdd.getAmount() << ' ' << cargoToAdd.getName() 
-            << " onto a ship because capacity is equal " << spaceOccupied_ << '/' << capacity_ << '\n';
+        std::cout << "[WARNING] Unable to load " << cargoToAdd.getAmount() << ' ' << cargoToAdd.getName() 
+                  << " onto the ship. Capacity: " << spaceOccupied_ << '/' << capacity_ << '\n';
     }
     else
     {
@@ -21,11 +21,12 @@ void Ship::loadCargoOntoShip(const Cargo& cargoToAdd)
 
 void Ship::unloadCargoFromShip(const Cargo& cargoToRemove)
 {
-    auto removedCargo = std::remove_if(cargo_.begin(), cargo_.end(),
-                            [&cargoToRemove](Cargo cargo){return cargo.getName() == cargoToRemove.getName();});
+    auto removedCargo = std::find_if(cargo_.begin(), cargo_.end(),
+                                     [&cargoToRemove](const Cargo& cargo) {
+                                         return cargo.getName() == cargoToRemove.getName();
+                                     });
 
-    if (removedCargo == cargo_.end())
-    {
+    if (removedCargo == cargo_.end()) {
         std::cout << "[WARNING] " << cargoToRemove.getName() << " not found on the ship\n";
         return;
     }
@@ -36,8 +37,8 @@ void Ship::unloadCargoFromShip(const Cargo& cargoToRemove)
         return;
     }
 
-    spaceOccupied_ -= cargoToRemove.getAmount();
-    cargo_.erase(removedCargo, cargo_.end());
+    spaceOccupied_ -= removedCargo->getAmount();
+    cargo_.erase(removedCargo);
 }
 
 void Ship::printCargos() const
@@ -56,8 +57,8 @@ Ship& Ship::operator+=(const unsigned crewToAdd)
     }
     else
     {
-        std::cout << "[WARNING] Ship is to small for " << actualCrew_ + crewToAdd
-            << " sailors, max number of sailors is " << maxCrew_ << '\n';
+        std::cout << "[WARNING] Ship is too small for " << actualCrew_ + crewToAdd
+                  << " sailors. Maximum number of sailors is " << maxCrew_ << '\n';
     }
 
     return *this;
@@ -65,20 +66,17 @@ Ship& Ship::operator+=(const unsigned crewToAdd)
 
 Ship& Ship::operator-=(const unsigned crewToFire)
 {
-    actualCrew_ > crewToFire
-    ? actualCrew_ -= crewToFire
-    : actualCrew_ = 0;
-
+    actualCrew_ = (actualCrew_ > crewToFire) ? (actualCrew_ - crewToFire) : 0;
     return *this;
 }
 
 std::ostream& operator<<(std::ostream& os, const Ship& ship)
 {
     os << "Name: " << ship.name_ << '\n'
-        << "ID: " << ship.id_ << '\n'
-        << "Speed: " << ship.speed_ << '\n'
-        << "Capacity: " << ship.spaceOccupied_ << '/' << ship.capacity_ << '\n'
-        << "Crew: " << ship.actualCrew_ << '/' << ship.maxCrew_ << '\n';
+       << "ID: " << ship.id_ << '\n'
+       << "Speed: " << ship.speed_ << '\n'
+       << "Capacity: " << ship.spaceOccupied_ << '/' << ship.capacity_ << '\n'
+       << "Crew: " << ship.actualCrew_ << '/' << ship.maxCrew_ << '\n';
 
     return os;
 }

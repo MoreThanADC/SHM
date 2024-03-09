@@ -5,15 +5,15 @@
 
 namespace
 {
-    std::string translateTypeOfCargo(const typeOfCargo type)
+    std::string translateTypeOfCargo(const TypeOfCargo type)
     {
         switch (type)
         {
-            case typeOfCargo::Item :
+            case TypeOfCargo::Item :
                 return "Item";
-            case typeOfCargo::Alcohol :
+            case TypeOfCargo::Alcohol :
                 return "Alcohol";
-            case typeOfCargo::Fruit :
+            case TypeOfCargo::Fruit :
                 return "Fruit";
             default :
                 return "Invalid type of cargo";
@@ -21,7 +21,7 @@ namespace
     }
 }
 
-Cargo::Cargo(std::string name, unsigned amount, unsigned price, typeOfCargo type)
+Cargo::Cargo(std::string name, unsigned amount, unsigned price, TypeOfCargo type)
     : name_(name)
     , amount_(amount)
     , price_(price)
@@ -31,25 +31,24 @@ Cargo::Cargo(std::string name, unsigned amount, unsigned price, typeOfCargo type
 
 Cargo::Cargo(const Cargo& otherCargo)
 {
-    this->name_ = otherCargo.name_;
-    this->amount_ = otherCargo.amount_;
-    this->price_ = otherCargo.price_;
-    this->type_= otherCargo.type_;
+    name_ = otherCargo.name_;
+    amount_ = otherCargo.amount_;
+    price_ = otherCargo.price_;
+    type_= otherCargo.type_;
 }
 
 Cargo& Cargo::operator=(const Cargo& otherCargo)
 {
-    this->name_ = otherCargo.name_;
-    this->amount_ = otherCargo.amount_;
-    this->price_ = otherCargo.price_;
-    this->type_ = otherCargo.type_;
+    name_ = otherCargo.name_;
+    amount_ = otherCargo.amount_;
+    price_ = otherCargo.price_;
+    type_ = otherCargo.type_;
     return *this;
 }
 
 Cargo& Cargo::operator+=(const unsigned cargoToAdd)
 {
     amount_ += cargoToAdd;
-
     return *this;
 }
 
@@ -58,7 +57,7 @@ Cargo& Cargo::operator-=(const unsigned cargoToDelete)
     if (cargoToDelete > amount_)
     {
         std::cout << "[WARNING] Can't remove " << cargoToDelete << " of " << name_
-            << " on the ship is only " << amount_ << '\n';
+                  << " as there are only " << amount_ << " on the ship.\n";
     }
     else
     {

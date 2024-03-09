@@ -3,14 +3,11 @@
 
 #include "Cargo.hpp"
 
-class Fruit : public Cargo
-{
+class Fruit : public Cargo {
 public:
-    Fruit(std::string name, unsigned amount, unsigned price, unsigned daysToSpoil)
-    : Cargo(name, amount, price, typeOfCargo::Fruit)
-    , daysToSpoil_(daysToSpoil)
-{
-};
+    explicit Fruit(std::string name, unsigned amount, unsigned price, unsigned daysToSpoil);
+
+    unsigned getDaysToSpoil() const { return daysToSpoil_; }
 
 private:
     unsigned daysToSpoil_;
