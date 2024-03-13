@@ -1,7 +1,5 @@
-#include "Alcohol.hpp"
-#include "Item.hpp"
-#include "Fruit.hpp"
 #include "Shop.hpp"
+#include "CargoCreator.hpp"
 
 #include <random>
 #include <iomanip>
@@ -48,7 +46,7 @@ std::string translateNameOfItem(Items itemName)
     }
 }
 
-}
+} // namespace
 
 Shop::Shop()
 {
@@ -62,6 +60,8 @@ void Shop::generateCargo(const TypeOfCargo& cargoType, const PricesMap& pricesMa
     std::mt19937 gen(rd());
     std::uniform_int_distribution<> distrib(5, 15);
 
+    CargoCreator factory;
+
     for (const auto& [cargo, cargoInfo] : pricesMap)
     {
         auto factor = static_cast<double>(distrib(gen)) / 10.0;
@@ -73,16 +73,16 @@ void Shop::generateCargo(const TypeOfCargo& cargoType, const PricesMap& pricesMa
         if (cargoType == TypeOfCargo::Alcohol)
         {
             unsigned alcoholContent = 20u * factor;
-            assortment_.emplace_back(std::make_shared<Alcohol>(name, amount, price, alcoholContent));
+            assortment_.emplace_back(factory.createAlcohol(name, amount, price, alcoholContent));
         }
         else if (cargoType == TypeOfCargo::Fruit)
         {
             unsigned daysToSpoil = 30u * factor;
-            assortment_.emplace_back(std::make_shared<Fruit>(name, amount, price, daysToSpoil));
+            assortment_.emplace_back(factory.createFruit(name, amount, price, daysToSpoil));
         }
         else
         {
-            assortment_.emplace_back(std::make_shared<Item>(name, amount, price));
+            assortment_.emplace_back(factory.createItem(name, amount, price));
         }
     }
 }

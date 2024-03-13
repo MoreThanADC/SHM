@@ -17,6 +17,8 @@ public:
 
         return false;
     }
+
+    void updateOnNextDay() override {};
 };
 
 #endif

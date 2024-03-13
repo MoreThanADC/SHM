@@ -13,6 +13,10 @@ public:
     explicit Player(const std::string& name, unsigned money);
 
     void buyShip(Shipyard& shipyard, unsigned id);
+
+    unsigned getMoney() const { return money_; }
+    Ship getShip() const { return *ship_; }
+
 private:
     std::string name_;
     unsigned money_;

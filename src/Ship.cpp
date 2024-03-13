@@ -4,6 +4,17 @@
 
 #include "Ship.hpp"
 #include "Cargo.hpp"
+#include "observer/Time.hpp"
+#include "Fruit.hpp"
+
+Ship::Ship(const std::string& name, unsigned speed, unsigned maxCrew, unsigned capacity)
+    : name_(name)
+    , speed_(speed)
+    , maxCrew_(maxCrew)
+    , capacity_(capacity)
+{
+    cargo_.reserve(capacity_);
+};
 
 void Ship::loadCargoOntoShip(const std::shared_ptr<Cargo>& cargoToAdd)
 {
@@ -16,12 +27,14 @@ void Ship::loadCargoOntoShip(const std::shared_ptr<Cargo>& cargoToAdd)
 
     spaceOccupied_ += cargoToAdd->getAmount();
     cargo_.push_back(cargoToAdd);
+
+    Time& time = Time::getInstance();
+    time.addObserver(cargoToAdd);
 }
 
-void Ship::unloadCargoFromShip(const std::shared_ptr<Cargo>& cargoToRemove)
-{
+void Ship::unloadCargoFromShip(const std::shared_ptr<Cargo>& cargoToRemove) {
     auto removedCargo = std::find_if(cargo_.begin(), cargo_.end(),
-                                     [&cargoToRemove](const std::shared_ptr<Cargo>& cargo) {
+                                     [&](const std::shared_ptr<Cargo>& cargo) {
                                          return *cargo == *cargoToRemove;
                                      });
 
@@ -30,14 +43,35 @@ void Ship::unloadCargoFromShip(const std::shared_ptr<Cargo>& cargoToRemove)
         return;
     }
 
-    if (spaceOccupied_ < cargoToRemove->getAmount())
-    {
-        std::cout << "[WARNING] Amout of " << cargoToRemove->getName() << " exceed occupied space on the ship\n";
+    if (spaceOccupied_ < cargoToRemove->getAmount()) {
+        std::cout << "[WARNING] Amount of " << cargoToRemove->getName() << " exceeds occupied space on the ship\n";
         return;
     }
 
+    Time& time = Time::getInstance();
+        std::cout << "ERASE!\n";
+    time.removeObserver(*removedCargo);
+
     spaceOccupied_ -= (*removedCargo)->getAmount();
+    std::cout << "ERASE!!\n";
     cargo_.erase(removedCargo);
+}
+
+void Ship::updateOnNextDay() {
+    std::cout << spaceOccupied_ << " xD \n";
+
+    /* Check if any fruit is rotten, if yes then remove it from the ship */
+    for (auto it = cargo_.begin(); it != cargo_.end();) {
+        if ((*it)->getType() == TypeOfCargo::Fruit) {
+            const Fruit* fruit = dynamic_cast<const Fruit*>(it->get());
+            if (fruit && fruit->isRotten()) {
+                std::cout << "Fruit is rotten! Unload\n";
+                unloadCargoFromShip(*it);
+                continue; // Incrementing 'it' is unnecessary after cargo removal
+            }
+        }
+        ++it; // Move iterator only if no cargo removal occurred
+    }
 }
 
 void Ship::printCargos() const

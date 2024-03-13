@@ -3,6 +3,7 @@
 
 #include <iostream>
 #include <string>
+#include "observer/TimeDependentObject.hpp"
 
 enum class TypeOfCargo {
     Item,
@@ -10,14 +11,12 @@ enum class TypeOfCargo {
     Fruit
 };
 
-class Cargo {
+class Cargo : public TimeDependentObject {
 public:
     explicit Cargo(const std::string& name, unsigned amount, unsigned price, TypeOfCargo type);
-
-    Cargo(const Cargo& otherCargo);
     virtual ~Cargo() = default;
 
-    Cargo& operator=(const Cargo& otherCargo);
+    Cargo(const Cargo& otherCargo);
 
     std::string getName() const { return name_; }
     TypeOfCargo getType() const { return cargoType_; }
@@ -26,10 +25,12 @@ public:
 
     Cargo& operator+=(const unsigned cargoToAdd);
     Cargo& operator-=(const unsigned cargoToDelete);
-
+    Cargo& operator=(const Cargo& otherCargo);
     virtual bool operator==(const Cargo& other) const = 0;
-    friend std::ostream& operator<<(std::ostream& os, const Cargo& cargo);
+
     virtual std::ostream& print(std::ostream& os) const;
+
+    friend std::ostream& operator<<(std::ostream& os, const Cargo& cargo);
 
 protected:
     std::string name_;

@@ -6,7 +6,7 @@ Shipyard::Shipyard()
 {
     createShips();
     setPrices();
-};
+}
 
 void Shipyard::createShips()
 {

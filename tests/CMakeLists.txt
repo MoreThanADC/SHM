@@ -10,6 +10,8 @@ FetchContent_MakeAvailable(googletest)
 
 set(Sources
     ShipTests.cpp
+    ShipyardTests.cpp
+    PlayerTests.cpp
     )
 
 enable_testing()

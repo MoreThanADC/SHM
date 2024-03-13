@@ -14,9 +14,8 @@ public:
 
     void printShips();
     std::unique_ptr<Ship> sellShip(unsigned id);
-
-
     std::optional<unsigned> getPrice(unsigned id);
+
 private:
     void createShips();
     void setPrices();

@@ -1,10 +1,10 @@
 #include "gtest/gtest.h"
 
-#include "../Ship.hpp"
-#include "../Cargo.cpp"
-#include "../Alcohol.hpp"
-#include "../Fruit.hpp"
-#include "../Item.hpp"
+#include "../src/Ship.hpp"
+#include "../src/Cargo.cpp"
+#include "../src/Alcohol.hpp"
+#include "../src/Fruit.hpp"
+#include "../src/Item.hpp"
 
 struct ShipTest : public ::testing::Test
 {
